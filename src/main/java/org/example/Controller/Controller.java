@@ -41,6 +41,7 @@ public class Controller {
 
     // TODO
     public static boolean transferToOtherAccount(int amountToSend, Customer toCustomer, Customer fromCustomer) {
+
         //ta in textfilen Customers.txt
         //validera id att skicka till
         //validera att belopp finns på egna kontot
@@ -52,6 +53,7 @@ public class Controller {
                     //return true
         //return false om inte det går att skicka cash (fel toCustomer eller om insufficient funds etc)
         return false;
+
     }
 
     // TODO
