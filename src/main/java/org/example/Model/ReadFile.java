@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileReader {
+public class ReadFile {
 
     public List<Customer> createListFromFile(Path filePath) {
         int counter = 0;
