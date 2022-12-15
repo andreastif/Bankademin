@@ -5,19 +5,14 @@ import org.example.Model.FileReader;
 import org.example.View.*;
 
 import java.nio.file.Path;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Controller {
 
     static FileReader fr = new FileReader();
     static final Path customersFile = Path.of("src/main/resources/Customers.txt");
-
-    private GuiFrame guiFrame;
-    private LoginPanel loginPanel;
     public Controller(){
-        loginPanel = new LoginPanel();
-        guiFrame = new GuiFrame(loginPanel, false);
+        new GuiFrame(new LoginPanel(), false);
     }
 
     public static Customer verifyLogin(String id, String password) throws NoSuchElementException {
@@ -46,6 +41,7 @@ public class Controller {
         return false;
     }
 
+    // TODO
     public static String findMyTransactions() {
         String transactionLog;
         // Använd currentCustomers ID som regex för att hitta alla rader i Transactions.txt som är kopplade till currentCustomer.
@@ -56,6 +52,6 @@ public class Controller {
 
 
     public static void main(String[] args) {
-        Controller controller = new Controller();
+        new Controller();
     }
 }
