@@ -1,7 +1,10 @@
 package org.example.View;
 
+import org.example.Model.Customer;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class GuiFrame extends JFrame {
 
@@ -10,7 +13,6 @@ public class GuiFrame extends JFrame {
     private HeaderPanel headerPanel;
 
     private boolean isLoggedIn;
-
 
     public GuiFrame(JPanel currentBody, boolean isLoggedIn) {
         this.isLoggedIn = isLoggedIn;

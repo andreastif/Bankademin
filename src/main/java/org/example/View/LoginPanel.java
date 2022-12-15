@@ -1,9 +1,16 @@
 package org.example.View;
 
+import org.example.Controller.Controller;
+import org.example.Model.Account;
+import org.example.Model.Customer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.NoSuchElementException;
 
 public class LoginPanel extends JPanel{
 
@@ -16,7 +23,7 @@ public class LoginPanel extends JPanel{
 
     public LoginPanel() {
         this.setLayout(new GridBagLayout());
-        username.setText("Enter Username");
+        username.setText("Please Enter id");
         password.setText("Password123");
 
         username.setFont(new Font("Sans-serif", Font.BOLD, 22));
@@ -40,18 +47,19 @@ public class LoginPanel extends JPanel{
 
     public void addListeners() {
         loginBtn.addActionListener(event -> {
-            // Kolla om username && password stämmer i db sedan logga in.
-            if(username.getText().equalsIgnoreCase("admin") && password.getText().equalsIgnoreCase("password")) {
+            try {
+                Customer currentCustomer = Controller.verifyLogin(username.getText(), password.getText());
                 Container parent = getParent();
                 parent.removeAll();
                 parent.add(new HeaderPanel(true), BorderLayout.NORTH);
-                parent.add(new HomePanel(), BorderLayout.CENTER);
+                parent.add(new HomePanel(currentCustomer), BorderLayout.CENTER);
                 parent.revalidate();
                 parent.repaint();
-            } else {
+            } catch (NoSuchElementException e) {
                 JOptionPane.showMessageDialog(null, "Wrong username or password!");
             }
         });
+
 
         username.addMouseListener(new MouseAdapter() {
             @Override

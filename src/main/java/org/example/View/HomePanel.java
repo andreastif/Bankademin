@@ -1,5 +1,7 @@
 package org.example.View;
 
+import org.example.Model.Customer;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,8 +9,11 @@ public class HomePanel extends JPanel {
 
     private JTextArea textArea = new JTextArea(52, 78);
 
-    public HomePanel(){
-        textArea.setText("\nVälkommen till Bankademins nya internetbank! wihoooooo");
+    private Customer currentCustomer;
+
+    public HomePanel(Customer currentCustomer){
+        this.currentCustomer = currentCustomer;
+        textArea.setText("\n" + currentCustomer.getName() + "\n" + "Välkommen till Bankademins nya internetbank! wihoooooo");
 
         textArea.setEditable(false);
 

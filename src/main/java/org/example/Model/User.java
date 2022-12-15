@@ -20,6 +20,18 @@ public abstract class User {
         this.dob = dob;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     @Override
     public String toString() {
         return "\n----" + "\n" + "ID: " + id + "\nName: " + name + "\npassword: " + password + "\ndob: " + dob;
