@@ -3,7 +3,7 @@ package org.example.View;
 import javax.swing.*;
 import java.awt.*;
 
-public class Header extends JPanel {
+public class HeaderPanel extends JPanel {
 
     private JButton buttonOne = new JButton("Hem");
     private JButton buttonTwo = new JButton("Mina konton");
@@ -13,7 +13,7 @@ public class Header extends JPanel {
     private boolean isLoggedIn;
 
 
-    public Header(boolean isLoggedIn){
+    public HeaderPanel(boolean isLoggedIn){
         this.isLoggedIn = isLoggedIn;
         this.setLayout(new GridBagLayout());
 

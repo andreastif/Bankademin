@@ -7,7 +7,7 @@ public class GuiFrame extends JFrame {
 
     private JPanel currentBody;
 
-    private Header header;
+    private HeaderPanel headerPanel;
 
     private boolean isLoggedIn;
 
@@ -18,9 +18,9 @@ public class GuiFrame extends JFrame {
         // man öppnar en ny vy.
         this.currentBody = currentBody;
 
-        header = new Header(isLoggedIn);
+        headerPanel = new HeaderPanel(isLoggedIn);
 
-        this.add(header, BorderLayout.NORTH);
+        this.add(headerPanel, BorderLayout.NORTH);
         this.add(currentBody, BorderLayout.CENTER);
 
         //Eftersom att vi har alla size-grejer här så bör vi inte behöva ställa in ett skit i respektive "body" class. Däremot så behöver vi bestämma Headerns dimensioner i Header, misstänker jag.

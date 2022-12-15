@@ -44,7 +44,7 @@ public class LoginPanel extends JPanel{
             if(username.getText().equalsIgnoreCase("admin") && password.getText().equalsIgnoreCase("password")) {
                 Container parent = getParent();
                 parent.removeAll();
-                parent.add(new Header(true), BorderLayout.NORTH);
+                parent.add(new HeaderPanel(true), BorderLayout.NORTH);
                 parent.add(new HomePanel(), BorderLayout.CENTER);
                 parent.revalidate();
                 parent.repaint();
