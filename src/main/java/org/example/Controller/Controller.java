@@ -1,28 +1,32 @@
 package org.example.Controller;
 
 import org.example.Model.Customer;
-import org.example.Model.FileReader;
+
+import org.example.Model.ReadFile;
+import org.example.Model.WriteFile;
 import org.example.View.*;
+
 
 import java.nio.file.Path;
 import java.util.NoSuchElementException;
 
 public class Controller {
 
-    static FileReader fr = new FileReader();
+    static ReadFile readFile = new ReadFile();
+    static WriteFile writeFile = new WriteFile();
     static final Path customersFile = Path.of("src/main/resources/Customers.txt");
     public Controller(){
         new GuiFrame(new LoginPanel(), false);
     }
 
     public static Customer verifyLogin(String id, String password) throws NoSuchElementException {
-        return fr.createListFromFile(customersFile).stream()
+        return readFile.createListFromFile(customersFile).stream()
                 .filter(customer -> customer.getId().equalsIgnoreCase(id) && customer.getPassword().equals(password))
                 .findFirst().orElseThrow(() -> new NoSuchElementException());
     }
 
     public static Customer getCustomerById(String id) throws NoSuchElementException {
-        return fr.createListFromFile(customersFile).stream()
+        return readFile.createListFromFile(customersFile).stream()
                 .filter(customer -> customer.getId().equalsIgnoreCase(id))
                 .findFirst().orElseThrow(() -> new NoSuchElementException());
     }
@@ -30,7 +34,7 @@ public class Controller {
 
     // TODO
     public static String generateStringToTransactions(){
-        // Här ska vi bygga strängen som ska skickas in till FileWriter. Det enda FileWriter ska göra är att skriva till filen.
+        // Här ska vi bygga strängen som ska skickas in till WriteFile. Det enda WriteFile ska göra är att skriva till filen.
         // Här bestämmer vi HUR den ska skriva till filen.
 
         String completed = "";
@@ -41,6 +45,7 @@ public class Controller {
 
     // TODO
     public static boolean transferToOtherAccount(int amountToSend, Customer toCustomer, Customer fromCustomer) {
+
 
         //ta in textfilen Customers.txt
         //validera id att skicka till
