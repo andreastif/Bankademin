@@ -10,17 +10,14 @@ import java.util.NoSuchElementException;
 
 public class Controller {
 
-    FileReader fr = new FileReader();
-    final Path customersFile = Path.of("src/main/resources/Customers.txt");
-
-    private List<Customer> customersList = fr.createListFromFile(customersFile);
+    static FileReader fr = new FileReader();
+    static final Path customersFile = Path.of("src/main/resources/Customers.txt");
 
     private GuiFrame guiFrame;
     private LoginPanel loginPanel;
     public Controller(){
         loginPanel = new LoginPanel();
         guiFrame = new GuiFrame(loginPanel, false);
-        System.out.println(customersList);
     }
 
     public static Customer verifyLogin(String id, String password) throws NoSuchElementException {

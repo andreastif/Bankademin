@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.NoSuchElementException;
 
-public class LoginPanel extends JPanel{
+public class LoginPanel extends JPanel {
 
     private JTextField username = new JTextField();
     private JPasswordField password = new JPasswordField();
