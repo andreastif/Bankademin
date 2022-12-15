@@ -16,4 +16,8 @@ public class Customer extends User {
     public String toString() {
         return super.toString() + account;
     }
+
+    public Account getAccount() {
+        return account;
+    }
 }

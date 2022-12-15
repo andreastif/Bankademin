@@ -16,7 +16,6 @@ public class ReadFile {
         List<Customer> customers = new ArrayList<>();
         List<String> currentCustomer = new ArrayList<>();
 
-
         try (BufferedReader in = Files.newBufferedReader(filePath)) {
             while ((line = in.readLine()) != null) {
                 currentCustomer.add(line);
