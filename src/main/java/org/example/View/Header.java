@@ -10,20 +10,38 @@ public class Header extends JPanel {
     private JButton buttonThree = new JButton("Betala och överföra");
     private JButton buttonFour = new JButton("Kontakt");
 
+    private boolean isLoggedIn;
 
-    public Header(){
+
+    public Header(boolean isLoggedIn){
+        this.isLoggedIn = isLoggedIn;
         this.setLayout(new GridBagLayout());
-        this.add(buttonOne);
-        this.add(Box.createHorizontalStrut(15));
-        this.add(buttonTwo);
-        this.add(Box.createHorizontalStrut(15));
-        this.add(buttonThree);
-        this.add(Box.createHorizontalStrut(15));
-        this.add(buttonFour);
 
-        this.setBackground(Color.LIGHT_GRAY);
+        loadMenu(isLoggedIn);
+
+        this.setBackground(Color.decode("#C7F2A4"));
         this.setPreferredSize(new Dimension(600, 100));
     }
 
+    public void loadMenu(boolean isLoggedIn) {
+        if(isLoggedIn) {
+            JButton[] buttons = {buttonOne, buttonTwo, buttonThree, buttonFour};
+            loadButtons(buttons);
+        } else {
+            JLabel header = new JLabel("Welcome to Bankademin");
+            header.setFont(new Font("Sans-serif", Font.BOLD, 30));
+            this.add(header);
+        }
+    }
 
+    public void loadButtons(JButton[] buttons) {
+        for (int i = 0; i < buttons.length; i++) {
+            buttons[i].setFont(new Font("Sans-serif", Font.BOLD, 25));
+            buttons[i].setFocusable(false);
+            buttons[i].setBackground(Color.decode("#E9EFC0"));
+            this.add(buttons[i]);
+            this.add(Box.createHorizontalStrut(15));
+        }
+    }
 }
+

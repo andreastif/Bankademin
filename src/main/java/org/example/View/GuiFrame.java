@@ -3,19 +3,23 @@ package org.example.View;
 import javax.swing.*;
 import java.awt.*;
 
-public class GUIHandler extends JFrame {
+public class GuiFrame extends JFrame {
 
     private JPanel currentBody;
 
     private Header header;
 
+    private boolean isLoggedIn;
 
-    public GUIHandler(JPanel currentBody) {
+
+    public GuiFrame(JPanel currentBody, boolean isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
         // Skulle kunna göra såhär för att enkelt kunna uppdatera currentBody, vilket är det enda som ändras i GUI när
         // man öppnar en ny vy.
         this.currentBody = currentBody;
 
-        header = new Header();
+        header = new Header(isLoggedIn);
+
         this.add(header, BorderLayout.NORTH);
         this.add(currentBody, BorderLayout.CENTER);
 
@@ -28,5 +32,9 @@ public class GUIHandler extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("Bankademin App");
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        isLoggedIn = loggedIn;
     }
 }

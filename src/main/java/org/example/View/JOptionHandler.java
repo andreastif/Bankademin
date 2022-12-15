@@ -5,7 +5,7 @@ import javax.swing.*;
 public class JOptionHandler {
 
     // En dynamisk prompt i form av en JOptionpane som kan återanvändas med custom meddelande som man för in som param
-    public String prompt(String messageInPrompt) {
+    public String jOptionPrompt(String messageInPrompt) {
         while (true) {
             String result = JOptionPane.showInputDialog(messageInPrompt);
             if (result == null) {
@@ -16,12 +16,9 @@ public class JOptionHandler {
                 return result;
             }
         }
-        return null;
+        return null; // Kasta nullpointerexception ?
     }
 
-    // TEST, FUNKAR, FÅR EJ VA TOMT + OM MAN KLICKAR CANCEL ELLER X så blir de ba NULL, man får göra en NULLCHECK
-    public static void main(String[] args) {
-        String test = new JOptionHandler().prompt("Test");
-        System.out.println(test);
-    }
 }
+
+
