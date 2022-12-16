@@ -9,6 +9,9 @@ import org.example.View.*;
 
 import javax.swing.*;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.NoSuchElementException;
 
 public class Controller {
@@ -38,10 +41,10 @@ public class Controller {
         // Här ska vi bygga strängen som ska skickas in till WriteFile. Det enda WriteFile ska göra är att skriva till filen.
         // Här bestämmer vi HUR den ska skriva till filen.
 
-        String completed = "";
-        StringBuilder sb = new StringBuilder();
+        String textPackage = sb.toString();
 
-        return completed;
+        writeFile.saveTransaction(textPackage);
+
     }
 
     // TODO - Nästan klar.
@@ -53,22 +56,14 @@ public class Controller {
         //skicka pengarna till andra kontot - OK
             //sänk balance hos fromCustomer - OK
             //öka balance hos toCustomer - OK
-            //TODO Skriv till transaktionsLoggen från den som har skickat, hur mycket och till vem amountToSend och spara till en transaktionsLogg.txt - EJ KLAR
+            //TODO Skriv till transaktionsLoggen från den som har skickat, hur mycket och till vem amountToSend och spara till en transaktionsLogg.txt - OK
             //return true - OK
         //return false om inte det går att skicka cash (fel toCustomer eller om insufficient funds etc) - OK
-
-        boolean isTransactionSuccessfull = false;
-
         if (validateFunds(fromCustomer, amountToSend)) {
             fromCustomer.getAccount().decreaseBalance(amountToSend);
             toCustomer.getAccount().increaseBalance(amountToSend);
-
-            //endast i testsyfte
-            writeFile.saveTransaction("TEST"); //ska EGENTLIGEN anropa generateStringToTransactions, endast TEST!
-            isTransactionSuccessfull = true;
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Insufficient funds");
+            generateStringToTransactions(amountToSend, fromCustomer, toCustomer);
+            return true;
         }
         return isTransactionSuccessfull;
     }
