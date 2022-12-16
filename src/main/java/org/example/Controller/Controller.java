@@ -37,9 +37,26 @@ public class Controller {
 
 
     // TODO - Prio 1, måste göras innan arbetet kan fortsätta
-    public static String generateStringToTransactions(){
+    public static void generateStringToTransactions(int amountToSend, Customer fromCustomer, Customer toCustomer){
         // Här ska vi bygga strängen som ska skickas in till WriteFile. Det enda WriteFile ska göra är att skriva till filen.
-        // Här bestämmer vi HUR den ska skriva till filen.
+        // Här bestämmer vi HUR den ska skriva till filen
+        LocalDateTime ldt = LocalDateTime.now();
+        String ldtFormatted = ldt.format(DateTimeFormatter.ofPattern("yy.MM.dd:HHmm"));
+
+        // 221216:1530
+
+        StringBuilder sb = new StringBuilder();
+
+        sb
+                .append(ldtFormatted)
+                .append(", From ID: ")
+                .append(fromCustomer.getId())
+                .append(", ")
+                .append(amountToSend)
+                .append(" SEK")
+                .append(", To ID: ")
+                .append(toCustomer.getId())
+                .append("\n");
 
         String textPackage = sb.toString();
 
