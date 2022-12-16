@@ -75,7 +75,14 @@ public class HeaderPanel extends JPanel {
         });
 
         buttonThree.addActionListener(event -> {
-            System.out.println("Betala och överföra");
+            if(currentCustomer != null) {
+                Container parent = getParent();
+                parent.removeAll();
+                parent.add(new HeaderPanel(true, currentCustomer), BorderLayout.NORTH);
+                parent.add(new MyAccountsPanel(currentCustomer), BorderLayout.CENTER);
+                parent.revalidate();
+                parent.repaint();
+            }
         });
 
         buttonFour.addActionListener(event -> {

@@ -12,7 +12,9 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.BiFunction;
 
 public class Controller {
 
@@ -35,16 +37,10 @@ public class Controller {
                 .findFirst().orElseThrow(() -> new NoSuchElementException());
     }
 
+    public static void generateStringToTransactionLog(int amountToSend, Customer fromCustomer, Customer toCustomer){
 
-    // TODO - Prio 1, måste göras innan arbetet kan fortsätta
-    public static void generateStringToTransactions(int amountToSend, Customer fromCustomer, Customer toCustomer){
-        // Här ska vi bygga strängen som ska skickas in till WriteFile. Det enda WriteFile ska göra är att skriva till filen.
-        // Här bestämmer vi HUR den ska skriva till filen
         LocalDateTime ldt = LocalDateTime.now();
-        String ldtFormatted = ldt.format(DateTimeFormatter.ofPattern("yy.MM.dd:HHmm"));
-
-        // 221216:1530
-
+        String ldtFormatted = ldt.format(DateTimeFormatter.ofPattern("yy.MM.dd:HHmm")); // 221216:1530 (datum : klockslag)
         StringBuilder sb = new StringBuilder();
 
         sb
@@ -59,27 +55,31 @@ public class Controller {
                 .append("\n");
 
         String textPackage = sb.toString();
-
-        writeFile.saveTransaction(textPackage);
-
+        writeFile.saveTransactionToTransactionLog(textPackage);
     }
 
-    // TODO - Nästan klar.
+    public static void saveCustomerTransactionToCustomerTxt(int amount, Customer fromCustomer, Customer toCustomer) {
+
+        //Vi har uppdaterat customer-objekten just nu. Bara spara till
+
+        readFile.createListFromFile(customersFile).stream().map( e -> {
+
+        });
+
+
+
+//        writeFile.updateCustomerTxt();
+    }
+
     public static boolean transferToOtherAccount(int amountToSend, Customer fromCustomer, Customer toCustomer) {
 
-        //ta in textfilen Customers.txt - OK (görs innan, ej här)
-        //validera id att skicka till - OK (görs innan, ej här)
-        //validera att belopp finns på egna kontot - OK
-        //skicka pengarna till andra kontot - OK
-            //sänk balance hos fromCustomer - OK
-            //öka balance hos toCustomer - OK
-            //TODO Skriv till transaktionsLoggen från den som har skickat, hur mycket och till vem amountToSend och spara till en transaktionsLogg.txt - OK
-            //return true - OK
-        //return false om inte det går att skicka cash (fel toCustomer eller om insufficient funds etc) - OK
+        //TODO: Uppdatera Customers.TXT med nytt SALDO?
+
         if (validateFunds(fromCustomer, amountToSend)) {
             fromCustomer.getAccount().decreaseBalance(amountToSend);
             toCustomer.getAccount().increaseBalance(amountToSend);
-            generateStringToTransactions(amountToSend, fromCustomer, toCustomer);
+            generateStringToTransactionLog(amountToSend, fromCustomer, toCustomer); //sparar en logg till transactions.txt
+            saveCustomerTransactionToCustomerTxt(amountToSend, fromCustomer, toCustomer); //uppdaterar customer.txt
             return true;
         }
         return false;
