@@ -10,15 +10,15 @@ public class Account {
         this.balance = balance;
     }
 
-    public void increaseBalance(int amount) {
+    public void increaseBalance(double amount) {
         this.balance = balance + amount;
     }
 
-    public void decreaseBalance(int amount) {
+    public void decreaseBalance(double amount) {
         this.balance = balance - amount;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 

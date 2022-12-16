@@ -2,6 +2,8 @@ package org.example.Controller;
 
 import org.example.Model.Account;
 import org.example.Model.Customer;
+import org.example.Model.ReadFile;
+import org.example.Model.WriteFile;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -35,5 +37,4 @@ class ControllerTest {
         assertEquals(0, martin.getAccount().getBalance());
         assertEquals(5000, ricardoMilos.getAccount().getBalance());
     }
-
 }

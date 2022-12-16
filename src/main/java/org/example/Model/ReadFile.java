@@ -23,7 +23,7 @@ public class ReadFile {
                 if(counter == 7){
 
                    Customer current = new Customer(currentCustomer.get(0),currentCustomer.get(1),currentCustomer.get(2),LocalDate.parse(currentCustomer.get(3)),
-                            new Account(currentCustomer.get(4),Integer.parseInt(currentCustomer.get(5))));
+                            new Account(currentCustomer.get(4), Double.parseDouble(currentCustomer.get(5))));
 
                     counter = 0;
                     customers.add(current);

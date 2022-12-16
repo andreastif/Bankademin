@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.function.BiFunction;
+import java.util.function.*;
 
 public class Controller {
 
@@ -24,7 +24,9 @@ public class Controller {
     }
 
     public static Customer verifyLogin(String id, String password) throws NoSuchElementException {
-        return readFile.createListFromFile(customersFile).stream()
+        List<Customer> testList =  readFile.createListFromFile(customersFile);
+        System.out.println(testList);
+        return testList.stream()
                 .filter(customer -> customer.getId().equalsIgnoreCase(id) && customer.getPassword().equals(password))
                 .findFirst().orElseThrow(() -> new NoSuchElementException());
     }
@@ -42,7 +44,7 @@ public class Controller {
                 .findFirst().orElseThrow(() -> new NoSuchElementException());
     }
 
-    public static void generateStringToTransactionLog(int amountToSend, Customer fromCustomer, Customer toCustomer){
+    public static void generateStringToTransactionLog(double amountToSend, Customer fromCustomer, Customer toCustomer){
 
         LocalDateTime ldt = LocalDateTime.now();
         String ldtFormatted = ldt.format(DateTimeFormatter.ofPattern("yy.MM.dd:HHmm")); // 221216:1530 (datum : klockslag)
@@ -63,34 +65,65 @@ public class Controller {
         writeFile.saveTransactionToTransactionLog(textPackage);
     }
 
-    public static void saveCustomerTransactionToCustomerTxt(int amount, Customer fromCustomer, Customer toCustomer) {
+    public static void updateCustomerTransfer(double amount, Customer fromCustomer, Customer toCustomer) {
+        //Vi har uppdaterat customer-objekten just nu. Bara spara till customer.txt
 
-        //Vi har uppdaterat customer-objekten just nu. Bara spara till
+        // Predicate == Represents a predicate (boolean-valued function) of one argument.
+        // typ: boolean isSame = fromCustomer.equals(toCustomer)
+        Predicate<Customer> isFromCustomer = customer -> customer.getId().equals(fromCustomer.getId());
+        Predicate<Customer> isToCustomer = customer -> customer.getId().equals(toCustomer.getId());
+        List<Customer> customerList = readFile.createListFromFile(customersFile)
+                //When we want to alter the inner state of an element, use peek instead of map (map is more convenient if we want to replace the element).
+                .stream().peek(customer -> {
+                    // Consumer == Represents an operation that accepts a single input argument and returns no result.
+                    if (isFromCustomer.test(customer)) {
+                        // Represents an operation that accepts a single input argument and returns no result
+                        Consumer<Customer> reduceAmount = customerMatch -> customerMatch.getAccount().decreaseBalance(amount);
+                        reduceAmount.accept(customer);
+                    }
 
-        readFile.createListFromFile(customersFile).stream().map( e -> {
+                    if (isToCustomer.test(customer)) {
+                        Consumer<Customer> increaseAmount = customerMatch -> customerMatch.getAccount().increaseBalance(amount);
+                        increaseAmount.accept(customer);
+                    }
+                }).toList();
+        saveCustomerTransactionToCustomerTxtFormatter(customerList);
+    }
 
-        });
+    public static void saveCustomerTransactionToCustomerTxtFormatter(List<Customer> customerList) {
 
+        StringBuilder stringToSend = new StringBuilder();
 
-
-//        writeFile.updateCustomerTxt();
+        for (Customer customer : customerList) {
+            stringToSend.append(customer.getId())
+                    .append("\n")
+                    .append(customer.getName())
+                    .append("\n")
+                    .append(customer.getPassword())
+                    .append("\n")
+                    .append(customer.getDob().toString())
+                    .append("\n")
+                    .append(customer.getAccount().getAccountNumber())
+                    .append("\n")
+                    .append(customer.getAccount().getBalance())
+                    .append("\n\n");
+        }
+        writeFile.updateCustomerTxt(String.valueOf(stringToSend));
     }
 
     public static boolean transferToOtherAccount(double amountToSend, Customer fromCustomer, Customer toCustomer) {
-
-        //TODO: Uppdatera Customers.TXT med nytt SALDO?
 
         if (validateFunds(fromCustomer, amountToSend)) {
             fromCustomer.getAccount().decreaseBalance(amountToSend);
             toCustomer.getAccount().increaseBalance(amountToSend);
             generateStringToTransactionLog(amountToSend, fromCustomer, toCustomer); //sparar en logg till transactions.txt
-            saveCustomerTransactionToCustomerTxt(amountToSend, fromCustomer, toCustomer); //uppdaterar customer.txt
+            updateCustomerTransfer(amountToSend, fromCustomer, toCustomer); //uppdaterar customer.txt
             return true;
         }
         return false;
     }
 
-    public static boolean validateFunds(Customer customer, int amount) {
+    public static boolean validateFunds(Customer customer, double amount) {
         return customer.getAccount().getBalance() - amount > 0;
     }
 
@@ -102,6 +135,9 @@ public class Controller {
         // paketera och returnera strängen till JTextArean i vederbörande panel.
         return "";
     }
+
+    //TODO Skapa en metod för att skicka BG/PG (ska endast reducera det egna kontot, inget annat konto skall öka)
+    //TODO skall även uppdatera transaktionsTXT samt CustomerTXT (saldo)
 
     public static boolean isDouble(String number) {
         try{

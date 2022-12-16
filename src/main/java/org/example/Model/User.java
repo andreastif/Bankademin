@@ -32,6 +32,8 @@ public abstract class User {
         return password;
     }
 
+    public LocalDate getDob() { return dob;}
+
     @Override
     public String toString() {
         return "\n----" + "\n" + "ID: " + id + "\nName: " + name + "\npassword: " + password + "\ndob: " + dob;
