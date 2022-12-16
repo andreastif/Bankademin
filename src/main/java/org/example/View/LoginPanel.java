@@ -24,7 +24,7 @@ public class LoginPanel extends JPanel {
     public LoginPanel() {
         this.setLayout(new GridBagLayout());
         username.setText("Please Enter id");
-        password.setText("Password123");
+        password.setText("Please Enter id");
 
         username.setFont(new Font("Sans-serif", Font.BOLD, 22));
         password.setFont(new Font("Sans-serif", Font.BOLD, 22));

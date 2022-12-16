@@ -1,16 +1,26 @@
 package org.example.View;
 
+import org.example.Controller.Controller;
 import org.example.Model.Customer;
 
 import javax.naming.ldap.Control;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.NoSuchElementException;
 
 public class TransferPanel extends JPanel {
 
     private Customer currentCustomer;
     private JButton sendAccBtn = new JButton("Överföring andra konton");
     private JButton payBillsBtn = new JButton("Betalning PG/BG");
+
+    private JLabel accountNumberLabel = new JLabel("Konto: ");
+    private JTextField accountNumber = new JTextField("                     ");
+    private JLabel amountLabel = new JLabel("Belopp: ");
+    private JTextField amount = new JTextField("                     ");
+    private JButton sendBtn = new JButton("Skicka");
 
     public TransferPanel(Customer currentCustomer) {
         this.currentCustomer = currentCustomer;
@@ -21,11 +31,28 @@ public class TransferPanel extends JPanel {
 
         //TEST
         this.add(new JLabel(currentCustomer.getName()));
-        
-        addListeners();
+
+        addMouseListeners();
+        addEventListeners();
     }
 
-    private void addListeners() {
+    private void addMouseListeners() {
+        accountNumber.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                accountNumber.setText("");
+            }
+        });
+
+        amount.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                amount.setText("");
+            }
+        });
+    }
+
+    private void addEventListeners() {
         sendAccBtn.addActionListener(event -> {
             accountNumber.setFont(new Font("Sans-serif", Font.BOLD, 25));
             accountNumberLabel.setFont(new Font("Sans-serif", Font.BOLD, 25));
@@ -48,12 +75,43 @@ public class TransferPanel extends JPanel {
             this.repaint();
         });
 
-        payBillsBtn.addActionListener(event -> {
-            if(currentCustomer != null) {
-                String amount = new JOptionHandler().jOptionPrompt("Betalning PG/BG");
+        sendBtn.addActionListener(event -> {
+            String accountFormatted = accountNumber.getText().trim();
+            String amountFormatted = amount.getText().trim();
+
+            if(accountFormatted.isBlank() || amountFormatted.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Du måste fylla i båda fälten!");
+            } else if (accountFormatted.equalsIgnoreCase(currentCustomer.getAccount().getAccountNumber())) {
+                JOptionPane.showMessageDialog(null,"Du kan inte överföra pengar till ditt egna konto!");
+            } else if (amountFormatted.contains("-")){
+                JOptionPane.showMessageDialog(null,"Ange giltigt belopp! Inte minus");
+            } else if (!(Controller.isDouble(amountFormatted))) {
+                JOptionPane.showMessageDialog(null,"Bara siffror tack!");
+            } else {
+                handleTransfer(accountFormatted, Double.parseDouble(amountFormatted));
             }
         });
+
+        payBillsBtn.addActionListener(event -> {
+            System.out.println("Hej hej pay bills");
+        });
     }
+
+    private void handleTransfer(String account, double amount) {
+        try {
+            Customer receiver = Controller.getCustomerByAccountNr(account);
+            boolean greatSuccess = Controller.transferToOtherAccount(amount, currentCustomer, receiver);
+            if(greatSuccess) {
+                JOptionPane.showMessageDialog(null, "Skickade " + amount + " Kr till Konto: " + account);
+            } else {
+                JOptionPane.showMessageDialog(null, "Du har ej tillräckligt med pengar på kontot, du har: " + currentCustomer.getAccount().getBalance() + " Kr");
+            }
+        } catch (NoSuchElementException e) {
+            JOptionPane.showMessageDialog(null, "Konto nr finns ej");
+        }
+
+    }
+
 
 }
 

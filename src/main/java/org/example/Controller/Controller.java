@@ -35,6 +35,13 @@ public class Controller {
                 .findFirst().orElseThrow(() -> new NoSuchElementException());
     }
 
+
+    public static Customer getCustomerByAccountNr(String accountNumber) throws NoSuchElementException {
+        return readFile.createListFromFile(customersFile).stream()
+                .filter(customer -> customer.getAccount().getAccountNumber().equalsIgnoreCase(accountNumber))
+                .findFirst().orElseThrow(() -> new NoSuchElementException());
+    }
+
     public static void generateStringToTransactionLog(int amountToSend, Customer fromCustomer, Customer toCustomer){
 
         LocalDateTime ldt = LocalDateTime.now();
