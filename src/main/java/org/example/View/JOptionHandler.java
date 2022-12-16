@@ -37,14 +37,6 @@ public class JOptionHandler {
         return 0;
     }
 
-    public boolean isDouble(String number) {
-        try{
-            Double.parseDouble(number);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
+
+
 }
-
-

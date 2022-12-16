@@ -2,11 +2,11 @@ package org.example.Model;
 
 public class Account {
 
-    private final String accountName;
-    private int balance;
+    private final String accountNumber;
+    private double balance;
 
-    public Account(String accountName, int balance){
-        this.accountName = accountName;
+    public Account(String accountName, double balance){
+        this.accountNumber = accountName;
         this.balance = balance;
     }
 
@@ -23,13 +23,13 @@ public class Account {
     }
 
 
-    public String getAccountName() {
-        return accountName;
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
     @Override
     public String toString() {
-        return  "\nAccount Name: " + accountName +
+        return  "\nAccount Name: " + accountNumber +
                 "\nBalance: " + balance;
     }
 }

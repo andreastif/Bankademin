@@ -18,7 +18,7 @@ public class MyAccountsPanel extends JPanel {
         customerName.setText("Kund: " + currentCustomer.getName());
         customerName.setFont(new Font("Sans-serif", Font.BOLD, 25));
 
-        accountName.setText("Konto: " + currentCustomer.getAccount().getAccountName());
+        accountName.setText("Konto: " + currentCustomer.getAccount().getAccountNumber());
         accountName.setFont(new Font("Sans-serif", Font.BOLD, 25));
 
         balance.setText("Saldo: " + currentCustomer.getAccount().getBalance());
@@ -33,5 +33,6 @@ public class MyAccountsPanel extends JPanel {
         // TODO gör TextArea ist för Labels + ScrollPane, Ta reda på korrekt ROWS och COLS
         // TODO: När MyAccounts öppnas så sätts texten i textarean till att bara visa personkontot med saldot.
         // TODO: När man klickar på kontot sätts texten i textarean till transaktionshistoriken.
+
     }
 }

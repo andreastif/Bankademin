@@ -7,9 +7,7 @@ import org.example.Model.WriteFile;
 import org.example.View.*;
 
 
-import javax.swing.*;
 import java.nio.file.Path;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -71,7 +69,7 @@ public class Controller {
 //        writeFile.updateCustomerTxt();
     }
 
-    public static boolean transferToOtherAccount(int amountToSend, Customer fromCustomer, Customer toCustomer) {
+    public static boolean transferToOtherAccount(double amountToSend, Customer fromCustomer, Customer toCustomer) {
 
         //TODO: Uppdatera Customers.TXT med nytt SALDO?
 
@@ -96,6 +94,15 @@ public class Controller {
         // Bygg strängarna i StringBuilder
         // paketera och returnera strängen till JTextArean i vederbörande panel.
         return "";
+    }
+
+    public static boolean isDouble(String number) {
+        try{
+            Double.parseDouble(number);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
 

@@ -15,7 +15,13 @@ public class WriteFile {
         }
     }
 
-    public void updateCustomerTxt(String transaction) {
+    public void updateCustomerTxt(String listOfCustomers) {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(Path.of("src/main/resources/Customers.txt").toFile()))) {
+            out.write(listOfCustomers);
+            out.newLine();
+        } catch (IOException e) {
+            System.out.println("Inläsning av fil misslyckades. Säkerställ att Path är korrekt.");
+        }
 
     }
 }
