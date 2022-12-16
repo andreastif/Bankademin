@@ -79,7 +79,7 @@ public class HeaderPanel extends JPanel {
                 Container parent = getParent();
                 parent.removeAll();
                 parent.add(new HeaderPanel(true, currentCustomer), BorderLayout.NORTH);
-                parent.add(new MyAccountsPanel(currentCustomer), BorderLayout.CENTER);
+                parent.add(new TransferPanel(currentCustomer), BorderLayout.CENTER);
                 parent.revalidate();
                 parent.repaint();
             }

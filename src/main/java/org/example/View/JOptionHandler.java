@@ -1,5 +1,7 @@
 package org.example.View;
 
+import org.example.Controller.Controller;
+
 import javax.swing.*;
 
 public class JOptionHandler {
@@ -19,6 +21,30 @@ public class JOptionHandler {
         return null; // Kasta nullpointerexception ?
     }
 
+    public double transferPrompt(String messageInPrompt) {
+        while(true) {
+            String amount = JOptionPane.showInputDialog(messageInPrompt);
+            if(amount == null) {
+                break;
+            } else if (amount.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Får ej va tomt!");
+            } else if (isDouble(amount)){
+                return Double.parseDouble(amount);
+            } else {
+                JOptionPane.showMessageDialog(null, "Bara siffror, tack!");
+            }
+        }
+        return 0;
+    }
+
+    public boolean isDouble(String number) {
+        try{
+            Double.parseDouble(number);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }
 
 
