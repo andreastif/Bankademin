@@ -19,6 +19,8 @@ class ControllerTest {
         assertTrue(Controller.transferToOtherAccount(200,martin, ricardoMilos));
         assertEquals(4800, martin.getAccount().getBalance());
         assertEquals(5200, ricardoMilos.getAccount().getBalance());
+        assertNotEquals(5200, martin.getAccount().getBalance());
+        assertNotEquals(4800, ricardoMilos.getAccount().getBalance());
     }
 
     @Test

@@ -65,7 +65,7 @@ public class Controller {
             generateStringToTransactions(amountToSend, fromCustomer, toCustomer);
             return true;
         }
-        return isTransactionSuccessfull;
+        return false;
     }
 
     public static boolean validateFunds(Customer customer, int amount) {
