@@ -138,6 +138,50 @@ public class Controller {
 
     //TODO Skapa en metod för att skicka BG/PG (ska endast reducera det egna kontot, inget annat konto skall öka)
     //TODO skall även uppdatera transaktionsTXT samt CustomerTXT (saldo)
+    public static boolean transferToBGPG(double amountToSend, Customer fromCustomer, String type){
+        if (validateFunds(fromCustomer, amountToSend)) {
+            fromCustomer.getAccount().decreaseBalance(amountToSend);
+            generateStringToTransactionLogBGPG(amountToSend, fromCustomer, type); //sparar en logg till transactions.txt
+            updateCustomerTransferBGPG(amountToSend, fromCustomer); //uppdaterar customer.txt
+            return true;
+        }
+        return false;
+    }
+
+    private static void updateCustomerTransferBGPG(double amount, Customer fromCustomer) {
+        Predicate<Customer> isFromCustomer = customer -> customer.getId().equals(fromCustomer.getId());
+        List<Customer> customerList = readFile.createListFromFile(customersFile)
+                //When we want to alter the inner state of an element, use peek instead of map (map is more convenient if we want to replace the element).
+                .stream().peek(customer -> {
+                    // Consumer == Represents an operation that accepts a single input argument and returns no result.
+                    if (isFromCustomer.test(customer)) {
+                        // Represents an operation that accepts a single input argument and returns no result
+                        Consumer<Customer> reduceAmount = customerMatch -> customerMatch.getAccount().decreaseBalance(amount);
+                        reduceAmount.accept(customer);
+                    }
+                }).toList();
+        saveCustomerTransactionToCustomerTxtFormatter(customerList);
+    }
+
+    private static void generateStringToTransactionLogBGPG(double amountToSend, Customer fromCustomer, String type) {
+        LocalDateTime ldt = LocalDateTime.now();
+        String ldtFormatted = ldt.format(DateTimeFormatter.ofPattern("yy.MM.dd:HHmm")); // 221216:1530 (datum : klockslag)
+        StringBuilder sb = new StringBuilder();
+
+        sb
+                .append(ldtFormatted)
+                .append(", From ID: ")
+                .append(fromCustomer.getId())
+                .append(", ")
+                .append(amountToSend)
+                .append(" SEK")
+                .append(", To: ")
+                .append(type)//ANTINGEN PG ELLER BG HÄR
+                .append("\n");
+
+        String textPackage = sb.toString();
+        writeFile.saveTransactionToTransactionLog(textPackage);
+    }
 
     public static boolean isDouble(String number) {
         try{
