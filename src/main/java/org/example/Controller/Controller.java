@@ -138,10 +138,10 @@ public class Controller {
 
     //TODO Skapa en metod för att skicka BG/PG (ska endast reducera det egna kontot, inget annat konto skall öka)
     //TODO skall även uppdatera transaktionsTXT samt CustomerTXT (saldo)
-    public static boolean transferToBGPG(double amountToSend, Customer fromCustomer, String type){
+    public static boolean transferToBGPG(double amountToSend, Customer fromCustomer, String account, String type){
         if (validateFunds(fromCustomer, amountToSend)) {
             fromCustomer.getAccount().decreaseBalance(amountToSend);
-            generateStringToTransactionLogBGPG(amountToSend, fromCustomer, type); //sparar en logg till transactions.txt
+            generateStringToTransactionLogBGPG(amountToSend, fromCustomer, account, type); //sparar en logg till transactions.txt
             updateCustomerTransferBGPG(amountToSend, fromCustomer); //uppdaterar customer.txt
             return true;
         }
@@ -163,7 +163,7 @@ public class Controller {
         saveCustomerTransactionToCustomerTxtFormatter(customerList);
     }
 
-    private static void generateStringToTransactionLogBGPG(double amountToSend, Customer fromCustomer, String type) {
+    private static void generateStringToTransactionLogBGPG(double amountToSend, Customer fromCustomer, String account, String type) {
         LocalDateTime ldt = LocalDateTime.now();
         String ldtFormatted = ldt.format(DateTimeFormatter.ofPattern("yy.MM.dd:HHmm")); // 221216:1530 (datum : klockslag)
         StringBuilder sb = new StringBuilder();
@@ -176,10 +176,11 @@ public class Controller {
                 .append(amountToSend)
                 .append(" SEK")
                 .append(", To: ")
-                .append(type)//ANTINGEN PG ELLER BG HÄR
+                .append(type + " " + account)//ANTINGEN PG ELLER BG HÄR
                 .append("\n");
 
         String textPackage = sb.toString();
+        System.out.println(textPackage);
         writeFile.saveTransactionToTransactionLog(textPackage);
     }
 
