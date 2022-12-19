@@ -10,7 +10,7 @@ public class HeaderPanel extends JPanel {
     private JButton buttonOne = new JButton("Hem");
     private JButton buttonTwo = new JButton("Mina konton");
     private JButton buttonThree = new JButton("Betala och överföra");
-    private JButton buttonFour = new JButton("Kontakt");
+    private JButton buttonFour = new JButton("Om oss & kontakt");
 
     private boolean isLoggedIn;
 

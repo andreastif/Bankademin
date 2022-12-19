@@ -35,4 +35,6 @@ public class GuiFrame extends JFrame {
     public void setLoggedIn(boolean loggedIn) {
         isLoggedIn = loggedIn;
     }
+
+
 }
