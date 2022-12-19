@@ -38,11 +38,8 @@ public class MyAccountsPanel extends JPanel {
         this.add(Box.createHorizontalStrut(15));
         this.add(balance);
 
-        // TODO gör TextArea ist för Labels + ScrollPane, Ta reda på korrekt ROWS och COLS
-        // TODO: När MyAccounts öppnas så sätts texten i textarean till att bara visa personkontot med saldot.
-        // TODO: När man klickar på kontot sätts texten i textarean till transaktionshistoriken.
-
         accountName.addActionListener(listener -> {
+            // Trans hämtas genom Controller
             List<String> allTrans = Controller.findMyTransactions(currentCustomer);
             String content = getTransLines(allTrans);
 
