@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
 
 public class Controller {
 
-    static ReadFile readFile = new ReadFile();
-    static WriteFile writeFile = new WriteFile();
-    static final Path customersFile = Path.of("src/main/resources/Customers.txt");
-    static final Path transactionsPath = Path.of("src/main/resources/Transactions.txt");
+    private static ReadFile readFile = new ReadFile();
+    private static WriteFile writeFile = new WriteFile();
+    private static final Path customersFile = Path.of("src/main/resources/Customers.txt");
+    private static final Path transactionsPath = Path.of("src/main/resources/Transactions.txt");
     public Controller(){
         new GuiFrame(new LoginPanel(), false);
     }
@@ -191,6 +191,15 @@ public class Controller {
     public static boolean isDouble(String number) {
         try{
             Double.parseDouble(number);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static boolean isInteger(String number) {
+        try{
+            Integer.parseInt(number);
             return true;
         } catch (NumberFormatException e) {
             return false;

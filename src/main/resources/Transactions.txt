@@ -50,3 +50,4 @@
 22.12.19:1144, From ID: 123456, 5.0 SEK, To: Bankgiro 521
 22.12.19:1144, From ID: 123456, 2.0 SEK, To: Plusgiro 521
 22.12.19:1144, From ID: 123456, 5.0 SEK, To: Bankgiro 521
+22.12.19:1326, From ID: 123456, 2515.0 SEK, To: Bankgiro 531

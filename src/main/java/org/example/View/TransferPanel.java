@@ -97,12 +97,14 @@ public class TransferPanel extends JPanel {
             } else if (amountFormatted.contains("-")){
                 JOptionPane.showMessageDialog(null,"Ange giltigt belopp! Inte minus");
             } else if (!(Controller.isDouble(amountFormatted))) {
+                JOptionPane.showMessageDialog(null, "Bara siffror tack!");
+            } else if (!(Controller.isInteger(accountFormatted))) {
                 JOptionPane.showMessageDialog(null,"Bara siffror tack!");
             } else {
                 // Kör BG/PG metoden om BG/PG är valt annars metoden för interna konton
                 if(bgPg) {
                     handleTransferBGPG(accountFormatted, Double.parseDouble(amountFormatted));
-                }else {
+                } else {
                     handleTransfer(accountFormatted, Double.parseDouble(amountFormatted));
                 }
             }
