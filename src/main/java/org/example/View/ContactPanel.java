@@ -20,7 +20,8 @@ public class ContactPanel extends JPanel {
         this.currentCustomer = currentCustomer;
 
         contactInfoHeader = "Kontaktinformation:\n";
-        contactInfoBody = "Telefon: 072-209 14 10\n" +
+        contactInfoBody =
+                "Telefon: 072-209 14 10\n" +
                 "Email: Bankademin.support@livesupport.india\n" +
                 "Adress: Tomtebodavägen Tomtebodavägen 3A, 171 65 Solna\n\n";
 
