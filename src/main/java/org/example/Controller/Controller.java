@@ -1,66 +1,196 @@
 package org.example.Controller;
 
 import org.example.Model.Customer;
-import org.example.Model.FileReader;
+
+import org.example.Model.ReadFile;
+import org.example.Model.WriteFile;
 import org.example.View.*;
 
+
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.*;
 
 public class Controller {
 
-    static FileReader fr = new FileReader();
+    static ReadFile readFile = new ReadFile();
+    static WriteFile writeFile = new WriteFile();
     static final Path customersFile = Path.of("src/main/resources/Customers.txt");
     public Controller(){
         new GuiFrame(new LoginPanel(), false);
     }
 
     public static Customer verifyLogin(String id, String password) throws NoSuchElementException {
-        return fr.createListFromFile(customersFile).stream()
+        List<Customer> testList =  readFile.createListFromFile(customersFile);
+        System.out.println(testList);
+        return testList.stream()
                 .filter(customer -> customer.getId().equalsIgnoreCase(id) && customer.getPassword().equals(password))
                 .findFirst().orElseThrow(() -> new NoSuchElementException());
     }
 
     public static Customer getCustomerById(String id) throws NoSuchElementException {
-        return fr.createListFromFile(customersFile).stream()
+        return readFile.createListFromFile(customersFile).stream()
                 .filter(customer -> customer.getId().equalsIgnoreCase(id))
                 .findFirst().orElseThrow(() -> new NoSuchElementException());
     }
 
 
-    // TODO
-    public static String generateStringToTransactions(){
-        // Här ska vi bygga strängen som ska skickas in till FileWriter. Det enda FileWriter ska göra är att skriva till filen.
-        // Här bestämmer vi HUR den ska skriva till filen.
-
-        String completed = "";
-        StringBuilder sb = new StringBuilder();
-
-        return completed;
+    public static Customer getCustomerByAccountNr(String accountNumber) throws NoSuchElementException {
+        return readFile.createListFromFile(customersFile).stream()
+                .filter(customer -> customer.getAccount().getAccountNumber().equalsIgnoreCase(accountNumber))
+                .findFirst().orElseThrow(() -> new NoSuchElementException());
     }
 
-    // TODO
-    public static boolean transferToOtherAccount(int amountToSend, Customer toCustomer, Customer fromCustomer) {
-        //ta in textfilen Customers.txt
-        //validera id att skicka till
-        //validera att belopp finns på egna kontot
-            //skicka pengarna till andra kontot =
-                //reducera det egna kontot
-                //öka det andra kontot
-                    //Om allt OK ->
-                    //Skriv till transaktionsLoggen från den som har skickat, hur mycket och till vem amountToSend och spara till en transaktionsLogg.txt
-                    //return true
-        //return false om inte det går att skicka cash (fel toCustomer eller om insufficient funds etc)
+    public static void generateStringToTransactionLog(double amountToSend, Customer fromCustomer, Customer toCustomer){
+
+        LocalDateTime ldt = LocalDateTime.now();
+        String ldtFormatted = ldt.format(DateTimeFormatter.ofPattern("yy.MM.dd:HHmm")); // 221216:1530 (datum : klockslag)
+        StringBuilder sb = new StringBuilder();
+
+        sb
+                .append(ldtFormatted)
+                .append(", From ID: ")
+                .append(fromCustomer.getId())
+                .append(", ")
+                .append(amountToSend)
+                .append(" SEK")
+                .append(", To: ")
+                .append(toCustomer.getId())
+                .append("\n");
+
+        String textPackage = sb.toString();
+        writeFile.saveTransactionToTransactionLog(textPackage);
+    }
+
+    public static void updateCustomerTransfer(double amount, Customer fromCustomer, Customer toCustomer) {
+        //Vi har uppdaterat customer-objekten just nu. Bara spara till customer.txt
+
+        // Predicate == Represents a predicate (boolean-valued function) of one argument.
+        // typ: boolean isSame = fromCustomer.equals(toCustomer)
+        Predicate<Customer> isFromCustomer = customer -> customer.getId().equals(fromCustomer.getId());
+        Predicate<Customer> isToCustomer = customer -> customer.getId().equals(toCustomer.getId());
+        List<Customer> customerList = readFile.createListFromFile(customersFile)
+                //When we want to alter the inner state of an element, use peek instead of map (map is more convenient if we want to replace the element).
+                .stream().peek(customer -> {
+                    // Consumer == Represents an operation that accepts a single input argument and returns no result.
+                    if (isFromCustomer.test(customer)) {
+                        // Represents an operation that accepts a single input argument and returns no result
+                        Consumer<Customer> reduceAmount = customerMatch -> customerMatch.getAccount().decreaseBalance(amount);
+                        reduceAmount.accept(customer);
+                    }
+
+                    if (isToCustomer.test(customer)) {
+                        Consumer<Customer> increaseAmount = customerMatch -> customerMatch.getAccount().increaseBalance(amount);
+                        increaseAmount.accept(customer);
+                    }
+                }).toList();
+        saveCustomerTransactionToCustomerTxtFormatter(customerList);
+    }
+
+    public static void saveCustomerTransactionToCustomerTxtFormatter(List<Customer> customerList) {
+
+        StringBuilder stringToSend = new StringBuilder();
+
+        for (Customer customer : customerList) {
+            stringToSend.append(customer.getId())
+                    .append("\n")
+                    .append(customer.getName())
+                    .append("\n")
+                    .append(customer.getPassword())
+                    .append("\n")
+                    .append(customer.getDob().toString())
+                    .append("\n")
+                    .append(customer.getAccount().getAccountNumber())
+                    .append("\n")
+                    .append(customer.getAccount().getBalance())
+                    .append("\n\n");
+        }
+        writeFile.updateCustomerTxt(String.valueOf(stringToSend));
+    }
+
+    public static boolean transferToOtherAccount(double amountToSend, Customer fromCustomer, Customer toCustomer) {
+
+        if (validateFunds(fromCustomer, amountToSend)) {
+            fromCustomer.getAccount().decreaseBalance(amountToSend);
+            toCustomer.getAccount().increaseBalance(amountToSend);
+            generateStringToTransactionLog(amountToSend, fromCustomer, toCustomer); //sparar en logg till transactions.txt
+            updateCustomerTransfer(amountToSend, fromCustomer, toCustomer); //uppdaterar customer.txt
+            return true;
+        }
         return false;
     }
 
-    // TODO
+    public static boolean validateFunds(Customer customer, double amount) {
+        return customer.getAccount().getBalance() - amount > 0;
+    }
+
+    // TODO - Denna kan göras efter att vi skriver korrekt till transaktionsloggen (metod generateStringToTransactions), då vet vi hur filen är formatterad och hur vi skall interagera med den.
     public static String findMyTransactions() {
         String transactionLog;
         // Använd currentCustomers ID som regex för att hitta alla rader i Transactions.txt som är kopplade till currentCustomer.
         // Bygg strängarna i StringBuilder
         // paketera och returnera strängen till JTextArean i vederbörande panel.
         return "";
+    }
+
+    //TODO Skapa en metod för att skicka BG/PG (ska endast reducera det egna kontot, inget annat konto skall öka)
+    //TODO skall även uppdatera transaktionsTXT samt CustomerTXT (saldo)
+    public static boolean transferToBGPG(double amountToSend, Customer fromCustomer, String account, String type){
+        if (validateFunds(fromCustomer, amountToSend)) {
+            fromCustomer.getAccount().decreaseBalance(amountToSend);
+            generateStringToTransactionLogBGPG(amountToSend, fromCustomer, account, type); //sparar en logg till transactions.txt
+            updateCustomerTransferBGPG(amountToSend, fromCustomer); //uppdaterar customer.txt
+            return true;
+        }
+        return false;
+    }
+
+    private static void updateCustomerTransferBGPG(double amount, Customer fromCustomer) {
+        Predicate<Customer> isFromCustomer = customer -> customer.getId().equals(fromCustomer.getId());
+        List<Customer> customerList = readFile.createListFromFile(customersFile)
+                //When we want to alter the inner state of an element, use peek instead of map (map is more convenient if we want to replace the element).
+                .stream().peek(customer -> {
+                    // Consumer == Represents an operation that accepts a single input argument and returns no result.
+                    if (isFromCustomer.test(customer)) {
+                        // Represents an operation that accepts a single input argument and returns no result
+                        Consumer<Customer> reduceAmount = customerMatch -> customerMatch.getAccount().decreaseBalance(amount);
+                        reduceAmount.accept(customer);
+                    }
+                }).toList();
+        saveCustomerTransactionToCustomerTxtFormatter(customerList);
+    }
+
+    private static void generateStringToTransactionLogBGPG(double amountToSend, Customer fromCustomer, String account, String type) {
+        LocalDateTime ldt = LocalDateTime.now();
+        String ldtFormatted = ldt.format(DateTimeFormatter.ofPattern("yy.MM.dd:HHmm")); // 221216:1530 (datum : klockslag)
+        StringBuilder sb = new StringBuilder();
+
+        sb
+                .append(ldtFormatted)
+                .append(", From ID: ")
+                .append(fromCustomer.getId())
+                .append(", ")
+                .append(amountToSend)
+                .append(" SEK")
+                .append(", To: ")
+                .append(type + " " + account)//ANTINGEN PG ELLER BG HÄR
+                .append("\n");
+
+        String textPackage = sb.toString();
+        System.out.println(textPackage);
+        writeFile.saveTransactionToTransactionLog(textPackage);
+    }
+
+    public static boolean isDouble(String number) {
+        try{
+            Double.parseDouble(number);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
 

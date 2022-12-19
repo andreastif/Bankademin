@@ -24,7 +24,7 @@ public class LoginPanel extends JPanel {
     public LoginPanel() {
         this.setLayout(new GridBagLayout());
         username.setText("Please Enter id");
-        password.setText("Password123");
+        password.setText("Please Enter id");
 
         username.setFont(new Font("Sans-serif", Font.BOLD, 22));
         password.setFont(new Font("Sans-serif", Font.BOLD, 22));
@@ -48,13 +48,7 @@ public class LoginPanel extends JPanel {
     public void addListeners() {
         loginBtn.addActionListener(event -> {
             try {
-                Customer currentCustomer = Controller.verifyLogin(username.getText(), password.getText());
-                Container parent = getParent();
-                parent.removeAll();
-                parent.add(new HeaderPanel(true), BorderLayout.NORTH);
-                parent.add(new HomePanel(currentCustomer), BorderLayout.CENTER);
-                parent.revalidate();
-                parent.repaint();
+                handleLogin();
             } catch (NoSuchElementException e) {
                 JOptionPane.showMessageDialog(null, "Wrong username or password!");
             }
@@ -74,5 +68,15 @@ public class LoginPanel extends JPanel {
                 password.setText("");
             }
         });
+    }
+
+    private void handleLogin() {
+        Customer currentCustomer = Controller.verifyLogin(username.getText(), password.getText());
+        Container parent = getParent();
+        parent.removeAll();
+        parent.add(new HeaderPanel(true, currentCustomer), BorderLayout.NORTH);
+        parent.add(new HomePanel(currentCustomer), BorderLayout.CENTER);
+        parent.revalidate();
+        parent.repaint();
     }
 }

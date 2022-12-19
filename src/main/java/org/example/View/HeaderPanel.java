@@ -1,7 +1,10 @@
 package org.example.View;
 
+import org.example.Model.Customer;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.NoSuchElementException;
 
 public class HeaderPanel extends JPanel {
 
@@ -12,8 +15,11 @@ public class HeaderPanel extends JPanel {
 
     private boolean isLoggedIn;
 
+    private Customer currentCustomer;
 
-    public HeaderPanel(boolean isLoggedIn){
+
+    public HeaderPanel(boolean isLoggedIn, Customer currentCustomer){
+        this.currentCustomer = currentCustomer;
         this.isLoggedIn = isLoggedIn;
         this.setLayout(new GridBagLayout());
 
@@ -21,6 +27,7 @@ public class HeaderPanel extends JPanel {
 
         this.setBackground(Color.decode("#C7F2A4"));
         this.setPreferredSize(new Dimension(600, 100));
+        addListeners();
     }
 
     public void loadMenu(boolean isLoggedIn) {
@@ -42,6 +49,45 @@ public class HeaderPanel extends JPanel {
             this.add(buttons[i]);
             this.add(Box.createHorizontalStrut(15));
         }
+    }
+
+    public void addListeners() {
+        buttonOne.addActionListener(event -> {
+            if(currentCustomer != null) {
+                Container parent = getParent();
+                parent.removeAll();
+                parent.add(new HeaderPanel(true, currentCustomer), BorderLayout.NORTH);
+                parent.add(new HomePanel(currentCustomer), BorderLayout.CENTER);
+                parent.revalidate();
+                parent.repaint();
+            }
+        });
+
+        buttonTwo.addActionListener(event -> {
+            if(currentCustomer != null) {
+                Container parent = getParent();
+                parent.removeAll();
+                parent.add(new HeaderPanel(true, currentCustomer), BorderLayout.NORTH);
+                parent.add(new MyAccountsPanel(currentCustomer), BorderLayout.CENTER);
+                parent.revalidate();
+                parent.repaint();
+            }
+        });
+
+        buttonThree.addActionListener(event -> {
+            if(currentCustomer != null) {
+                Container parent = getParent();
+                parent.removeAll();
+                parent.add(new HeaderPanel(true, currentCustomer), BorderLayout.NORTH);
+                parent.add(new TransferPanel(currentCustomer), BorderLayout.CENTER);
+                parent.revalidate();
+                parent.repaint();
+            }
+        });
+
+        buttonFour.addActionListener(event -> {
+            System.out.println("Kontakt");
+        });
     }
 }
 

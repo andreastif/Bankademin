@@ -1,6 +1,10 @@
 package org.example.View;
 
+import org.example.Controller.Controller;
+import org.example.Model.Customer;
+
 import javax.swing.*;
+import java.util.NoSuchElementException;
 
 public class JOptionHandler {
 
@@ -19,6 +23,41 @@ public class JOptionHandler {
         return null; // Kasta nullpointerexception ?
     }
 
+    public Customer retrieveAccountPrompt(String messageInPrompt) {
+        while (true) {
+            String accountNumber = JOptionPane.showInputDialog(messageInPrompt);
+            if (accountNumber == null) {
+                break;
+            } else if (accountNumber.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Får ej va tomt!");
+            } else {
+                try {
+                    return Controller.getCustomerByAccountNr(accountNumber);
+                } catch (NoSuchElementException e) {
+                    JOptionPane.showMessageDialog(null, "Kontonummer finns ej!");
+                }
+            }
+        }
+        return null;
+    }
+
+    public double transferPrompt(String messageInPrompt) {
+        while(true) {
+            String amount = JOptionPane.showInputDialog(messageInPrompt);
+            if(amount == null) {
+                break;
+            } else if (amount.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Får ej va tomt!");
+            } else if (Controller.isDouble(amount)){
+                Controller.getCustomerById(amount);
+                return Double.parseDouble(amount);
+            } else {
+                JOptionPane.showMessageDialog(null, "Bara siffror, tack!");
+            }
+        }
+        return 0;
+    }
+
+
+
 }
-
-
