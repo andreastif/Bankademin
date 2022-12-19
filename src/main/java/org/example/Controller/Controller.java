@@ -195,6 +195,7 @@ public class Controller {
         }
     }
 
+    /*
     public static boolean isInteger(String number) {
         try{
             Integer.parseInt(number);
@@ -203,6 +204,7 @@ public class Controller {
             return false;
         }
     }
+    */
 
 
     public static void main(String[] args) {
