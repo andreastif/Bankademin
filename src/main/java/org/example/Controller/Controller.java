@@ -13,12 +13,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class Controller {
 
     static ReadFile readFile = new ReadFile();
     static WriteFile writeFile = new WriteFile();
     static final Path customersFile = Path.of("src/main/resources/Customers.txt");
+    static final Path transactionsPath = Path.of("src/main/resources/Transactions.txt");
     public Controller(){
         new GuiFrame(new LoginPanel(), false);
     }
@@ -127,17 +131,17 @@ public class Controller {
         return customer.getAccount().getBalance() - amount > 0;
     }
 
-    // TODO - Denna kan göras efter att vi skriver korrekt till transaktionsloggen (metod generateStringToTransactions), då vet vi hur filen är formatterad och hur vi skall interagera med den.
-    public static String findMyTransactions() {
-        String transactionLog;
-        // Använd currentCustomers ID som regex för att hitta alla rader i Transactions.txt som är kopplade till currentCustomer.
-        // Bygg strängarna i StringBuilder
-        // paketera och returnera strängen till JTextArean i vederbörande panel.
-        return "";
+    public static List<String> findMyTransactions(Customer customer) {
+
+        List<String> transactionsList = readFile.getTransactionsFromTxt(transactionsPath);
+
+        // Denna fångar alla transactions mellan 1 kund BG/PG samt mellan 2 kunder om customer ID matchar
+        return transactionsList
+                .stream()
+                .filter(line -> line.contains(customer.getId()))
+                .collect(Collectors.toList());
     }
 
-    //TODO Skapa en metod för att skicka BG/PG (ska endast reducera det egna kontot, inget annat konto skall öka)
-    //TODO skall även uppdatera transaktionsTXT samt CustomerTXT (saldo)
     public static boolean transferToBGPG(double amountToSend, Customer fromCustomer, String account, String type){
         if (validateFunds(fromCustomer, amountToSend)) {
             fromCustomer.getAccount().decreaseBalance(amountToSend);

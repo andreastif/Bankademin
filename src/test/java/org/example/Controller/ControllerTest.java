@@ -37,4 +37,15 @@ class ControllerTest {
         assertEquals(0, martin.getAccount().getBalance());
         assertEquals(5000, ricardoMilos.getAccount().getBalance());
     }
+
+    @Test
+    void testFindMyTransactions() {
+
+        Customer martin = new Customer("123456","Martin Röv", "123pass", LocalDate.parse("1987-02-05"), new Account("313303104605", 397600.0));
+        Customer ricardo = new Customer("555655","Ricardo Milos", "rickyMartin", LocalDate.parse("1982-01-01"), new Account("111222333444", 599970.0));
+        System.out.println(Controller.findMyTransactions(martin));
+        System.out.println(Controller.findMyTransactions(ricardo));
+
+
+    }
 }

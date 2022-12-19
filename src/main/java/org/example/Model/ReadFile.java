@@ -37,4 +37,18 @@ public class ReadFile {
         return customers;
     }
 
+    public List<String> getTransactionsFromTxt(Path filePath) {
+
+        List<String> listOfTransactions = new ArrayList<>();
+        String line;
+        try (BufferedReader in = Files.newBufferedReader(filePath)) {
+            while ((line = in.readLine()) != null) {
+                listOfTransactions.add(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Inläsning av fil misslyckades. Säkerställ att den ligger i src-mappen.");
+        }
+        return listOfTransactions;
+    }
+
 }
