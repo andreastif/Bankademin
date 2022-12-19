@@ -100,7 +100,7 @@ public class TransferPanel extends JPanel {
                 }
             }
         });
-        bankGiroBtn.addActionListener(event ->{
+        bankGiroBtn.addActionListener(event -> {
             valBgPg.setText(bankGiroBtn.getText());
             sendBtn.setVisible(true);
             bgPg = true;
