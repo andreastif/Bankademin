@@ -32,10 +32,10 @@ public class ContactPanel extends JPanel {
                         "Hatte blev medlem i ledningsgruppen och delägare till Bankdemin 1995 efter att han personligen\n" +
                         "räddade landet från Bank-, finans- och fastighetskrisen 1990.\n\n"  +
                 "Ikaros Tass\n" +
-                        "Född 2004. Jakob är med råge inte bara vår yngsta medlem i ledningsgruppen,\n" +
+                        "Född 2004. Ikaros är med råge inte bara vår yngsta medlem i ledningsgruppen,\n" +
                         "utan också den yngsta personen på hela företaget.\n\n" +
                 "Karl Hamilton\n" +
-                        "REDACTED\n\n" +
+                        "Hemligt.\n\n" +
                 "Otto SilverHielm\n" +
                         "Otto var ordförande för studentkåren på den prestigefyllda internatskolan Solbacka.\n" +
                         "Otto brukar beskrivas av sina kollegor och vänner som ondskefull, sadistisk och hänsynslös.\n" +
@@ -47,7 +47,7 @@ public class ContactPanel extends JPanel {
         textArea.append(aboutHeader);
         textArea.append(aboutBody);
 
-        textArea.setFont(new Font("Sans-serif", Font.BOLD, 22));
+        textArea.setFont(new Font("Sans-serif", Font.BOLD, 18));
         this.add(textArea);
         textArea.setEditable(false);
 
