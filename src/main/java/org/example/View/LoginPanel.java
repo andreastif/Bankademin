@@ -32,7 +32,7 @@ public class LoginPanel extends JPanel {
 
         loginBtn.setFont(new Font("Sans-serif", Font.BOLD, 25));
         loginBtn.setFocusable(false);
-        loginBtn.setBackground(Color.decode("#E9EFC0"));
+        loginBtn.setBackground(Color.decode("#C0DEFF"));
 
         this.add(header);
         this.add(Box.createHorizontalStrut(15));

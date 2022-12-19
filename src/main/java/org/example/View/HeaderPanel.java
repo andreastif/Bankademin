@@ -25,7 +25,7 @@ public class HeaderPanel extends JPanel {
 
         loadMenu(isLoggedIn);
 
-        this.setBackground(Color.decode("#C7F2A4"));
+        this.setBackground(Color.decode("#4B56D2"));
         this.setPreferredSize(new Dimension(600, 100));
         addListeners();
     }
@@ -45,7 +45,7 @@ public class HeaderPanel extends JPanel {
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].setFont(new Font("Sans-serif", Font.BOLD, 25));
             buttons[i].setFocusable(false);
-            buttons[i].setBackground(Color.decode("#E9EFC0"));
+            buttons[i].setBackground(Color.decode("#C0DEFF"));
             this.add(buttons[i]);
             this.add(Box.createHorizontalStrut(15));
         }
