@@ -57,7 +57,7 @@ public class Controller {
                 .append(", ")
                 .append(amountToSend)
                 .append(" SEK")
-                .append(", To ID: ")
+                .append(", To: ")
                 .append(toCustomer.getId())
                 .append("\n");
 
