@@ -1,10 +1,6 @@
 package org.example.View;
-
-import org.example.Model.Customer;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class GuiFrame extends JFrame {
 
@@ -26,7 +22,6 @@ public class GuiFrame extends JFrame {
         this.add(currentBody, BorderLayout.CENTER);
 
         //Eftersom att vi har alla size-grejer här så bör vi inte behöva ställa in ett skit i respektive "body" class. Däremot så behöver vi bestämma Headerns dimensioner i Header, misstänker jag.
-
         this.setBackground(Color.BLUE);
         this.add(currentBody);
         this.setVisible(true);
@@ -34,6 +29,7 @@ public class GuiFrame extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setTitle("Bankademin App");
+        this.setResizable(false);
     }
 
     public void setLoggedIn(boolean loggedIn) {

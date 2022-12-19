@@ -8,18 +8,20 @@ import java.awt.*;
 public class MyAccountsPanel extends JPanel {
     private Customer currentCustomer;
     private JLabel customerName = new JLabel();
-    private JLabel accountName = new JLabel();
+    private JButton accountName = new JButton();
     private JLabel balance = new JLabel();
 
     public MyAccountsPanel(Customer currentCustomer) {
         this.currentCustomer = currentCustomer;
-        this.setLayout(new GridBagLayout());
 
         customerName.setText("Kund: " + currentCustomer.getName());
         customerName.setFont(new Font("Sans-serif", Font.BOLD, 25));
 
         accountName.setText("Konto: " + currentCustomer.getAccount().getAccountNumber());
         accountName.setFont(new Font("Sans-serif", Font.BOLD, 25));
+        accountName.setFocusable(false);
+        accountName.setBackground(new Color(255, 255, 255, 0)); // transparent
+        accountName.setBorder(null);
 
         balance.setText("Saldo: " + currentCustomer.getAccount().getBalance());
         balance.setFont(new Font("Sans-serif", Font.BOLD, 25));

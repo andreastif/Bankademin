@@ -1,15 +1,12 @@
 package org.example.View;
 
 import org.example.Controller.Controller;
-import org.example.Model.Account;
 import org.example.Model.Customer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.NoSuchElementException;
 
 public class LoginPanel extends JPanel {

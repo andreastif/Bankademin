@@ -4,7 +4,6 @@ import org.example.Model.Customer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.NoSuchElementException;
 
 public class HeaderPanel extends JPanel {
 
@@ -86,7 +85,12 @@ public class HeaderPanel extends JPanel {
         });
 
         buttonFour.addActionListener(event -> {
-            System.out.println("Kontakt");
+            Container parent = getParent();
+            parent.removeAll();
+            parent.add(new HeaderPanel(true, currentCustomer), BorderLayout.NORTH);
+            parent.add(new ContactPanel(currentCustomer), BorderLayout.CENTER);
+            parent.revalidate();
+            parent.repaint();
         });
     }
 }
