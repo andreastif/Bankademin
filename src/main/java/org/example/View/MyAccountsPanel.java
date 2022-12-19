@@ -5,6 +5,8 @@ import org.example.Model.Customer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MyAccountsPanel extends JPanel {
     private Customer currentCustomer;
@@ -55,4 +57,13 @@ public class MyAccountsPanel extends JPanel {
 
 
     }
+
+    private String getTransLines(List<String> allTrans) {
+        StringBuilder lines = new StringBuilder();
+        for(String line : allTrans) {
+            lines.append(line).append("\n");
+        }
+        return lines.toString();
+    }
+
 }

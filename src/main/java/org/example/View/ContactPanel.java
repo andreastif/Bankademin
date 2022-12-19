@@ -30,7 +30,7 @@ public class ContactPanel extends JPanel {
                         "Hatte har varit verksam i bankväsendet sedan 1978.\n" +
                         "Hatte blev medlem i ledningsgruppen och delägare till Bankdemin 1995 efter att han personligen\n" +
                         "räddade landet från Bank-, finans- och fastighetskrisen 1990.\n\n"  +
-                "Jakob Tass\n" +
+                "Ikaros Tass\n" +
                         "Född 2004. Jakob är med råge inte bara vår yngsta medlem i ledningsgruppen,\n" +
                         "utan också den yngsta personen på hela företaget.\n\n" +
                 "Karl Hamilton\n" +
