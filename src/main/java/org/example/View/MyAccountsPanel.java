@@ -5,7 +5,6 @@ import org.example.Model.Customer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyAccountsPanel extends JPanel {
@@ -15,7 +14,7 @@ public class MyAccountsPanel extends JPanel {
     private JLabel balance = new JLabel();
     private JButton transactionsButton = new JButton("Transaktionshistorik");
     private JTextArea transactions = new JTextArea(25, 40);
-    private JScrollPane scrollpain = new JScrollPane(transactions);
+    private JScrollPane scrollpane = new JScrollPane(transactions);
 
 
     public MyAccountsPanel(Customer currentCustomer) {
@@ -47,7 +46,7 @@ public class MyAccountsPanel extends JPanel {
             transactions.setText(content);
             transactions.setEditable(false);
             transactions.setBorder(null);
-            this.add(scrollpain, BorderLayout.SOUTH);
+            this.add(scrollpane, BorderLayout.SOUTH);
             this.revalidate();
             this.repaint();
         });
