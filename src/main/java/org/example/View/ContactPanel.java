@@ -7,14 +7,14 @@ import java.awt.*;
 
 public class ContactPanel extends JPanel {
 
-    private JTextArea textArea = new JTextArea(52, 78);
+    private JTextArea textArea = new JTextArea(20, 20);
     private Customer currentCustomer;
 
-    StringBuilder sb = new StringBuilder();
-    String contactInfoHeader;
-    String contactInfoBody;
-    String aboutHeader;
-    String aboutBody;
+    private StringBuilder sb = new StringBuilder();
+    private String contactInfoHeader;
+    private String contactInfoBody;
+    private String aboutHeader;
+    private String aboutBody;
 
     public ContactPanel(Customer currentCustomer){
         this.currentCustomer = currentCustomer;
@@ -46,9 +46,10 @@ public class ContactPanel extends JPanel {
         textArea.append(aboutHeader);
         textArea.append(aboutBody);
 
-
+        textArea.setFont(new Font("Sans-serif", Font.BOLD, 22));
         this.add(textArea);
         textArea.setEditable(false);
+
 
         this.setBackground(Color.WHITE);
     }
