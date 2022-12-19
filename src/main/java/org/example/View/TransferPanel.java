@@ -20,7 +20,11 @@ public class TransferPanel extends JPanel {
     private JTextField accountNumber = new JTextField("                     ");
     private JLabel amountLabel = new JLabel("Belopp: ");
     private JTextField amount = new JTextField("                     ");
+    private JButton bankGiroBtn = new JButton("Bankgiro");
+    private JButton plusGiroBtn = new JButton("Plusgiro");
+    private JLabel valBgPg = new JLabel("      ");
     private JButton sendBtn = new JButton("Skicka");
+    private boolean bgPg = false;
 
     public TransferPanel(Customer currentCustomer) {
         this.currentCustomer = currentCustomer;
@@ -35,7 +39,22 @@ public class TransferPanel extends JPanel {
         addMouseListeners();
         addEventListeners();
     }
+    public void setTransferPanel(){
+        accountNumber.setFont(new Font("Sans-serif", Font.BOLD, 25));
+        accountNumberLabel.setFont(new Font("Sans-serif", Font.BOLD, 25));
+        this.add(accountNumberLabel);
+        this.add(accountNumber);
+        this.add(Box.createHorizontalStrut(15));
 
+        amount.setFont(new Font("Sans-serif", Font.BOLD, 25));
+        amountLabel.setFont(new Font("Sans-serif", Font.BOLD, 25));
+        this.add(amountLabel);
+        this.add(amount);
+        this.add(Box.createHorizontalStrut(15));
+
+        this.remove(sendAccBtn);
+        this.remove(payBillsBtn);
+    }
     private void addMouseListeners() {
         accountNumber.addMouseListener(new MouseAdapter() {
             @Override
@@ -54,23 +73,9 @@ public class TransferPanel extends JPanel {
 
     private void addEventListeners() {
         sendAccBtn.addActionListener(event -> {
-            accountNumber.setFont(new Font("Sans-serif", Font.BOLD, 25));
-            accountNumberLabel.setFont(new Font("Sans-serif", Font.BOLD, 25));
-            this.add(accountNumberLabel);
-            this.add(accountNumber);
-            this.add(Box.createHorizontalStrut(15));
-
-            amount.setFont(new Font("Sans-serif", Font.BOLD, 25));
-            amountLabel.setFont(new Font("Sans-serif", Font.BOLD, 25));
-            this.add(amountLabel);
-            this.add(amount);
-            this.add(Box.createHorizontalStrut(15));
-
+            setTransferPanel();
             sendBtn.setFont(new Font("Sans-serif", Font.BOLD, 25));
             this.add(sendBtn);
-
-            this.remove(sendAccBtn);
-            this.remove(payBillsBtn);
             this.revalidate();
             this.repaint();
         });
@@ -88,12 +93,38 @@ public class TransferPanel extends JPanel {
             } else if (!(Controller.isDouble(amountFormatted))) {
                 JOptionPane.showMessageDialog(null,"Bara siffror tack!");
             } else {
-                handleTransfer(accountFormatted, Double.parseDouble(amountFormatted));
+                if(bgPg) {
+                    handleTransferBGPG(accountFormatted, Double.parseDouble(amountFormatted));
+                }else {
+                    handleTransfer(accountFormatted, Double.parseDouble(amountFormatted));
+                }
             }
         });
-
+        bankGiroBtn.addActionListener(event -> {
+            valBgPg.setText(bankGiroBtn.getText());
+            sendBtn.setVisible(true);
+            bgPg = true;
+        });
+        plusGiroBtn.addActionListener(event ->{
+            valBgPg.setText(plusGiroBtn.getText());
+            sendBtn.setVisible(true);
+            bgPg = true;
+        });
         payBillsBtn.addActionListener(event -> {
-            System.out.println("Hej hej pay bills");
+            setTransferPanel();
+            bankGiroBtn.setFont(new Font("Sans-serif", Font.BOLD, 25));
+            plusGiroBtn.setFont(new Font("Sans-serif", Font.BOLD, 25));
+            valBgPg.setFont(new Font("Sans-serif", Font.BOLD, 25));
+            this.add(bankGiroBtn);
+            this.add(plusGiroBtn);
+            this.add(valBgPg);
+            sendBtn.setFont(new Font("Sans-serif", Font.BOLD, 25));
+            this.add(sendBtn);
+            sendBtn.setVisible(false);
+
+            this.revalidate();
+            this.repaint();
+
         });
     }
 
@@ -109,6 +140,16 @@ public class TransferPanel extends JPanel {
         } catch (NoSuchElementException e) {
             JOptionPane.showMessageDialog(null, "Konto nr finns ej");
         }
+
+    }
+    private void handleTransferBGPG(String account, double amount) {
+            bgPg = false;
+            boolean greatSuccess = Controller.transferToBGPG(amount, currentCustomer, account, valBgPg.getText());
+            if(greatSuccess) {
+                JOptionPane.showMessageDialog(null, "Skickade " + amount + " Kr till " +valBgPg.getText() + " konto: "+ account);
+            } else {
+                JOptionPane.showMessageDialog(null, "Du har ej tillräckligt med pengar på kontot, du har: " + currentCustomer.getAccount().getBalance() + " Kr");
+            }
 
     }
 
