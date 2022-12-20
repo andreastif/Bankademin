@@ -22,7 +22,7 @@ public class ReadFile {
                 counter++;
                 if(counter == 7){
 
-                   Customer current = new Customer(currentCustomer.get(0),currentCustomer.get(1),currentCustomer.get(2),LocalDate.parse(currentCustomer.get(3)),
+                    Customer current = new Customer(currentCustomer.get(0),currentCustomer.get(1),currentCustomer.get(2),LocalDate.parse(currentCustomer.get(3)),
                             new Account(currentCustomer.get(4), Double.parseDouble(currentCustomer.get(5))));
 
                     counter = 0;
@@ -49,6 +49,19 @@ public class ReadFile {
             System.out.println("Inläsning av fil misslyckades. Säkerställ att den ligger i src-mappen.");
         }
         return listOfTransactions;
+    }
+
+    public String updateHomeMenyAsAdmin() {
+        String line = "";
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader in = Files.newBufferedReader(Path.of("src/main/resources/HomePanelNewsReel.txt"))) {
+            while ((line = in.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            System.out.println("Inläsning av fil misslyckades. Säkerställ att den ligger i src-mappen.");
+        }
+        return sb.toString();
     }
 
 }

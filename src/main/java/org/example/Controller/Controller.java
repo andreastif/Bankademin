@@ -1,5 +1,6 @@
 package org.example.Controller;
 
+import org.example.Model.Admin;
 import org.example.Model.Customer;
 
 import org.example.Model.ReadFile;
@@ -8,6 +9,7 @@ import org.example.View.*;
 
 
 import java.nio.file.Path;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -32,13 +34,6 @@ public class Controller {
                 .filter(customer -> customer.getId().equalsIgnoreCase(id) && customer.getPassword().equals(password))
                 .findFirst().orElseThrow(() -> new NoSuchElementException());
     }
-
-    public static Customer getCustomerById(String id) throws NoSuchElementException {
-        return readFile.createListFromFile(customersFile).stream()
-                .filter(customer -> customer.getId().equalsIgnoreCase(id))
-                .findFirst().orElseThrow(() -> new NoSuchElementException());
-    }
-
 
     public static Customer getCustomerByAccountNr(String accountNumber) throws NoSuchElementException {
         return readFile.createListFromFile(customersFile).stream()
@@ -186,6 +181,16 @@ public class Controller {
         writeFile.saveTransactionToTransactionLog(textPackage);
     }
 
+    public static void writeToHomeTxt(String string) {
+        writeFile.updateHomeMenyAsAdmin(string);
+    }
+
+    public static String getNewsReelText() {
+        return readFile.updateHomeMenyAsAdmin();
+    }
+
+
+
     public static boolean isDouble(String number) {
         try{
             Double.parseDouble(number);
@@ -194,7 +199,6 @@ public class Controller {
             return false;
         }
     }
-
 
     public static void main(String[] args) {
         new Controller();
