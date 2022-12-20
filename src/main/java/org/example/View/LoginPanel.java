@@ -1,15 +1,12 @@
 package org.example.View;
 
 import org.example.Controller.Controller;
-import org.example.Model.Account;
 import org.example.Model.Customer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.NoSuchElementException;
 
 public class LoginPanel extends JPanel {
@@ -32,7 +29,7 @@ public class LoginPanel extends JPanel {
 
         loginBtn.setFont(new Font("Sans-serif", Font.BOLD, 25));
         loginBtn.setFocusable(false);
-        loginBtn.setBackground(Color.decode("#E9EFC0"));
+        loginBtn.setBackground(Color.decode("#C0DEFF"));
 
         this.add(header);
         this.add(Box.createHorizontalStrut(15));
@@ -53,7 +50,6 @@ public class LoginPanel extends JPanel {
                 JOptionPane.showMessageDialog(null, "Wrong username or password!");
             }
         });
-
 
         username.addMouseListener(new MouseAdapter() {
             @Override

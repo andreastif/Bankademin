@@ -5,8 +5,8 @@ public class Account {
     private final String accountNumber;
     private double balance;
 
-    public Account(String accountName, double balance){
-        this.accountNumber = accountName;
+    public Account(String accountNumber, double balance){
+        this.accountNumber = accountNumber;
         this.balance = balance;
     }
 
@@ -29,7 +29,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return  "\nAccount Name: " + accountNumber +
+        return  "\nAccount Number: " + accountNumber +
                 "\nBalance: " + balance;
     }
 }

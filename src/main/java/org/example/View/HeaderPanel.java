@@ -4,14 +4,13 @@ import org.example.Model.Customer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.NoSuchElementException;
 
 public class HeaderPanel extends JPanel {
 
     private JButton buttonOne = new JButton("Hem");
     private JButton buttonTwo = new JButton("Mina konton");
     private JButton buttonThree = new JButton("Betala och överföra");
-    private JButton buttonFour = new JButton("Kontakt");
+    private JButton buttonFour = new JButton("Om oss & kontakt");
 
     private boolean isLoggedIn;
 
@@ -25,7 +24,7 @@ public class HeaderPanel extends JPanel {
 
         loadMenu(isLoggedIn);
 
-        this.setBackground(Color.decode("#C7F2A4"));
+        this.setBackground(Color.decode("#4B56D2"));
         this.setPreferredSize(new Dimension(600, 100));
         addListeners();
     }
@@ -45,7 +44,7 @@ public class HeaderPanel extends JPanel {
         for (int i = 0; i < buttons.length; i++) {
             buttons[i].setFont(new Font("Sans-serif", Font.BOLD, 25));
             buttons[i].setFocusable(false);
-            buttons[i].setBackground(Color.decode("#E9EFC0"));
+            buttons[i].setBackground(Color.decode("#C0DEFF"));
             this.add(buttons[i]);
             this.add(Box.createHorizontalStrut(15));
         }
@@ -86,7 +85,12 @@ public class HeaderPanel extends JPanel {
         });
 
         buttonFour.addActionListener(event -> {
-            System.out.println("Kontakt");
+            Container parent = getParent();
+            parent.removeAll();
+            parent.add(new HeaderPanel(true, currentCustomer), BorderLayout.NORTH);
+            parent.add(new ContactPanel(currentCustomer), BorderLayout.CENTER);
+            parent.revalidate();
+            parent.repaint();
         });
     }
 }

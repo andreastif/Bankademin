@@ -2,8 +2,6 @@ package org.example.View;
 
 import org.example.Controller.Controller;
 import org.example.Model.Customer;
-
-import javax.naming.ldap.Control;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -15,26 +13,34 @@ public class TransferPanel extends JPanel {
     private Customer currentCustomer;
     private JButton sendAccBtn = new JButton("Överföring andra konton");
     private JButton payBillsBtn = new JButton("Betalning PG/BG");
-
     private JLabel accountNumberLabel = new JLabel("Konto: ");
     private JTextField accountNumber = new JTextField("                     ");
     private JLabel amountLabel = new JLabel("Belopp: ");
     private JTextField amount = new JTextField("                     ");
-    private JButton bankGiroBtn = new JButton("Bankgiro");
-    private JButton plusGiroBtn = new JButton("Plusgiro");
-    private JLabel valBgPg = new JLabel("      ");
+    private JRadioButton bankGiroRadio = new JRadioButton("Bankgiro", false);
+    private JRadioButton plusGiroRadio = new JRadioButton("Plusgiro", false);
     private JButton sendBtn = new JButton("Skicka");
-    private boolean bgPg = false;
+    private String valBgPgChoice;
+    private boolean isbgpg = false;
 
     public TransferPanel(Customer currentCustomer) {
         this.currentCustomer = currentCustomer;
         this.setLayout(new GridBagLayout());
 
-        this.add(sendAccBtn);
-        this.add(payBillsBtn);
+        System.out.println("CUSTOMER: " + currentCustomer);
 
-        //TEST
-        this.add(new JLabel(currentCustomer.getName()));
+        sendAccBtn.setFont(new Font("Sans-serif", Font.BOLD, 25));
+        payBillsBtn.setFont(new Font("Sans-serif", Font.BOLD, 25));
+
+        sendAccBtn.setBackground(Color.decode("#C0DEFF"));
+        payBillsBtn.setBackground(Color.decode("#C0DEFF"));
+
+        sendBtn.setFont(new Font("Sans-serif", Font.BOLD, 25));
+        sendBtn.setBackground(Color.decode("#C0DEFF"));
+
+        this.add(sendAccBtn);
+        this.add(Box.createHorizontalStrut(15));
+        this.add(payBillsBtn);
 
         addMouseListeners();
         addEventListeners();
@@ -91,34 +97,44 @@ public class TransferPanel extends JPanel {
             } else if (amountFormatted.contains("-")){
                 JOptionPane.showMessageDialog(null,"Ange giltigt belopp! Inte minus");
             } else if (!(Controller.isDouble(amountFormatted))) {
-                JOptionPane.showMessageDialog(null,"Bara siffror tack!");
-            } else {
-                if(bgPg) {
+                JOptionPane.showMessageDialog(null, "Bara siffror tack!");
+            } else if(!accountFormatted.matches("[0-9]+")){
+                JOptionPane.showMessageDialog(null, "Bara siffror tack!");
+            }else{
+                // Kör BG/PG metoden om BG/PG är valt annars metoden för interna konton
+                if(isbgpg) {
                     handleTransferBGPG(accountFormatted, Double.parseDouble(amountFormatted));
-                }else {
+                } else {
                     handleTransfer(accountFormatted, Double.parseDouble(amountFormatted));
                 }
             }
         });
-        bankGiroBtn.addActionListener(event -> {
-            valBgPg.setText(bankGiroBtn.getText());
+
+        bankGiroRadio.addActionListener(event -> {
+            valBgPgChoice = "Bankgiro";
             sendBtn.setVisible(true);
-            bgPg = true;
+            plusGiroRadio.setVisible(false);
+            isbgpg = true;
+            System.out.println("Bank Giro");
         });
-        plusGiroBtn.addActionListener(event ->{
-            valBgPg.setText(plusGiroBtn.getText());
+
+        plusGiroRadio.addActionListener(event -> {
+            valBgPgChoice = "Plusgiro";
             sendBtn.setVisible(true);
-            bgPg = true;
+            bankGiroRadio.setVisible(false);
+            isbgpg = true;
+            System.out.println("Plus giro");
         });
+
         payBillsBtn.addActionListener(event -> {
             setTransferPanel();
-            bankGiroBtn.setFont(new Font("Sans-serif", Font.BOLD, 25));
-            plusGiroBtn.setFont(new Font("Sans-serif", Font.BOLD, 25));
-            valBgPg.setFont(new Font("Sans-serif", Font.BOLD, 25));
-            this.add(bankGiroBtn);
-            this.add(plusGiroBtn);
-            this.add(valBgPg);
+            bankGiroRadio.setFont(new Font("Sans-serif", Font.BOLD, 25));
+            plusGiroRadio.setFont(new Font("Sans-serif", Font.BOLD, 25));
+            this.add(bankGiroRadio);
+            this.add(plusGiroRadio);
+
             sendBtn.setFont(new Font("Sans-serif", Font.BOLD, 25));
+            this.add(Box.createHorizontalStrut(15));
             this.add(sendBtn);
             sendBtn.setVisible(false);
 
@@ -129,6 +145,7 @@ public class TransferPanel extends JPanel {
     }
 
     private void handleTransfer(String account, double amount) {
+        isbgpg = false;
         try {
             Customer receiver = Controller.getCustomerByAccountNr(account);
             boolean greatSuccess = Controller.transferToOtherAccount(amount, currentCustomer, receiver);
@@ -143,10 +160,10 @@ public class TransferPanel extends JPanel {
 
     }
     private void handleTransferBGPG(String account, double amount) {
-            bgPg = false;
-            boolean greatSuccess = Controller.transferToBGPG(amount, currentCustomer, account, valBgPg.getText());
+
+            boolean greatSuccess = Controller.transferToBGPG(amount, currentCustomer, account, valBgPgChoice);
             if(greatSuccess) {
-                JOptionPane.showMessageDialog(null, "Skickade " + amount + " Kr till " +valBgPg.getText() + " konto: "+ account);
+                JOptionPane.showMessageDialog(null, "Skickade " + amount + " Kr till " + valBgPgChoice + " konto: " + account);
             } else {
                 JOptionPane.showMessageDialog(null, "Du har ej tillräckligt med pengar på kontot, du har: " + currentCustomer.getAccount().getBalance() + " Kr");
             }
@@ -155,6 +172,3 @@ public class TransferPanel extends JPanel {
 
 
 }
-
-
-
