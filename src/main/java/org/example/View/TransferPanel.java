@@ -145,6 +145,7 @@ public class TransferPanel extends JPanel {
     }
 
     private void handleTransfer(String account, double amount) {
+        isbgpg = false;
         try {
             Customer receiver = Controller.getCustomerByAccountNr(account);
             boolean greatSuccess = Controller.transferToOtherAccount(amount, currentCustomer, receiver);
@@ -159,7 +160,7 @@ public class TransferPanel extends JPanel {
 
     }
     private void handleTransferBGPG(String account, double amount) {
-            isbgpg = false;
+
             boolean greatSuccess = Controller.transferToBGPG(amount, currentCustomer, account, valBgPgChoice);
             if(greatSuccess) {
                 JOptionPane.showMessageDialog(null, "Skickade " + amount + " Kr till " + valBgPgChoice + " konto: " + account);
