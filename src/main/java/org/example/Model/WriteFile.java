@@ -25,7 +25,7 @@ public class WriteFile {
         }
     }
 
-    public void updateHomeMenyAsAdmin(String lines) {
+    public void writeToHomePanelNewsReel(String lines) {
         try (BufferedWriter out = new BufferedWriter(new FileWriter(Path.of("src/main/resources/HomePanelNewsReel.txt").toFile()))) {
             out.write(lines);
             out.newLine();

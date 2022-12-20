@@ -50,8 +50,6 @@ public class LoginPanel extends JPanel {
         loginBtn.addActionListener(event -> {
             try {
                 handleLogin();
-
-
             } catch (NoSuchElementException e) {
                 JOptionPane.showMessageDialog(null, "Wrong username or password!");
             }
