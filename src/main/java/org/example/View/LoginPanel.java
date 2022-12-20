@@ -51,7 +51,6 @@ public class LoginPanel extends JPanel {
             }
         });
 
-
         username.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {

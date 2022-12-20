@@ -3,9 +3,7 @@ package org.example.Model;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 public class WriteFile {
     public void saveTransactionToTransactionLog(String transaction) {

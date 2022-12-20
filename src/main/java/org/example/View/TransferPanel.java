@@ -21,7 +21,7 @@ public class TransferPanel extends JPanel {
     private JRadioButton plusGiroRadio = new JRadioButton("Plusgiro", false);
     private JButton sendBtn = new JButton("Skicka");
     private String valBgPgChoice;
-    private boolean bgPg = false;
+    private boolean isbgpg = false;
 
     public TransferPanel(Customer currentCustomer) {
         this.currentCustomer = currentCustomer;
@@ -102,7 +102,7 @@ public class TransferPanel extends JPanel {
                 JOptionPane.showMessageDialog(null, "Bara siffror tack!");
             }else{
                 // Kör BG/PG metoden om BG/PG är valt annars metoden för interna konton
-                if(bgPg) {
+                if(isbgpg) {
                     handleTransferBGPG(accountFormatted, Double.parseDouble(amountFormatted));
                 } else {
                     handleTransfer(accountFormatted, Double.parseDouble(amountFormatted));
@@ -114,7 +114,7 @@ public class TransferPanel extends JPanel {
             valBgPgChoice = "Bankgiro";
             sendBtn.setVisible(true);
             plusGiroRadio.setVisible(false);
-            bgPg = true;
+            isbgpg = true;
             System.out.println("Bank Giro");
         });
 
@@ -122,7 +122,7 @@ public class TransferPanel extends JPanel {
             valBgPgChoice = "Plusgiro";
             sendBtn.setVisible(true);
             bankGiroRadio.setVisible(false);
-            bgPg = true;
+            isbgpg = true;
             System.out.println("Plus giro");
         });
 
@@ -159,7 +159,7 @@ public class TransferPanel extends JPanel {
 
     }
     private void handleTransferBGPG(String account, double amount) {
-            bgPg = false;
+            isbgpg = false;
             boolean greatSuccess = Controller.transferToBGPG(amount, currentCustomer, account, valBgPgChoice);
             if(greatSuccess) {
                 JOptionPane.showMessageDialog(null, "Skickade " + amount + " Kr till " + valBgPgChoice + " konto: " + account);
@@ -171,6 +171,3 @@ public class TransferPanel extends JPanel {
 
 
 }
-
-
-

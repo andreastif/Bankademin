@@ -9,8 +9,6 @@ public class ContactPanel extends JPanel {
 
     private JTextArea textArea = new JTextArea(20, 20);
     private Customer currentCustomer;
-
-    private StringBuilder sb = new StringBuilder();
     private String contactInfoHeader;
     private String contactInfoBody;
     private String aboutHeader;
@@ -42,7 +40,6 @@ public class ContactPanel extends JPanel {
                         "Otto var ordförande för studentkåren på den prestigefyllda internatskolan Solbacka.\n" +
                         "Otto brukar beskrivas av sina kollegor och vänner som ondskefull, sadistisk och hänsynslös.\n" +
                         "Ottos fritidsintressen sträcker sig från allt kring våld och lidande till olaga hot och bajskastning.\n\n";
-
 
         textArea.append(contactInfoHeader);
         textArea.append(contactInfoBody);
