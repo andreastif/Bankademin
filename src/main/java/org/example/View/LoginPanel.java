@@ -74,7 +74,7 @@ public class LoginPanel extends JPanel {
     private void handleLogin() {
         Container parent = getParent();
 
-        if(username.getText().equalsIgnoreCase("1337") && password.getText().equalsIgnoreCase("1337")) {
+        if(username.getText().equalsIgnoreCase("admin") && password.getText().equalsIgnoreCase("pass")) {
             Admin currentAdmin = new Admin(username.getText().trim(), "Admin", password.getText().trim(), LocalDate.now());
 
             parent.removeAll();
